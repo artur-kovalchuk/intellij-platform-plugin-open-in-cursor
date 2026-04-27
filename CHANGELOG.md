@@ -4,6 +4,7 @@
 ## 0.0.2
 ### Added
 - Cursor logo icon (16×16 with transparent background, plus `@2x` HiDPI variant) shown next to the `Cursor` action item.
+- JetBrains Marketplace plugin icon: `META-INF/pluginIcon.svg` (light) and `META-INF/pluginIcon_dark.svg` (dark) for the plugin listing.
 
 ## 0.0.1
 ### Added

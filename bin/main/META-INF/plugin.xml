@@ -1,0 +1,20 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>com.github.arturkovalchuk.intellijplatformpluginopenincursor</id>
+    <name>Open in Cursor IDE</name>
+    <vendor>artur-kovalchuk</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <resource-bundle>messages.OpenInCursorBundle</resource-bundle>
+
+    <actions>
+        <action id="OpenInCursor.OpenFile"
+                class="com.github.arturkovalchuk.intellijplatformpluginopenincursor.actions.OpenInCursorAction"
+                text="Cursor"
+                description="Open the selected file or folder in Cursor IDE"
+                icon="/icons/cursor.png">
+            <add-to-group group-id="RevealGroup" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
