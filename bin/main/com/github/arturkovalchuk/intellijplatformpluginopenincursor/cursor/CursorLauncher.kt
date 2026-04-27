@@ -2,8 +2,6 @@ package com.github.arturkovalchuk.intellijplatformpluginopenincursor.cursor
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.util.concurrency.AppExecutorUtil
-import java.awt.Desktop
-import java.net.URI
 import java.util.concurrent.TimeUnit
 
 /**
@@ -21,9 +19,11 @@ object CursorLauncher {
     private const val PROJECT_FOCUS_DELAY_MS = 350L
 
     fun openFile(projectBasePath: String?, fileAbsolutePath: String, lineNumber: Int?) {
+        LOG.info("openFile requested: projectBasePath=$projectBasePath, file=$fileAbsolutePath, line=$lineNumber")
         val fileUrl = CursorUrlBuilder.forPath(fileAbsolutePath, lineNumber)
 
         if (projectBasePath.isNullOrBlank() || projectBasePath == fileAbsolutePath) {
+            LOG.info("Direct open (no chaining): projectBasePath=${projectBasePath ?: "<null>"}, fileUrl=$fileUrl")
             launch(fileUrl)
             return
         }
@@ -32,41 +32,32 @@ object CursorLauncher {
         LOG.info("Chained open: $projectUrl -> $fileUrl (delay ${PROJECT_FOCUS_DELAY_MS}ms)")
         launch(projectUrl)
         AppExecutorUtil.getAppScheduledExecutorService().schedule(
-            { launch(fileUrl) },
+            {
+                LOG.info("Chained open: firing delayed file URL $fileUrl")
+                launch(fileUrl)
+            },
             PROJECT_FOCUS_DELAY_MS,
             TimeUnit.MILLISECONDS,
         )
     }
 
     fun openPath(absolutePath: String) {
+        LOG.info("openPath requested: path=$absolutePath")
         launch(CursorUrlBuilder.forPath(absolutePath))
     }
 
     private fun launch(url: String) {
-        LOG.info("Opening $url")
-        try {
-            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                Desktop.getDesktop().browse(URI(url))
-                return
-            }
-            execFallback(url)
-        } catch (e: Exception) {
-            LOG.warn("Desktop.browse failed for $url, trying OS fallback", e)
-            try {
-                execFallback(url)
-            } catch (fallbackErr: Exception) {
-                LOG.warn("OS fallback failed for $url", fallbackErr)
-            }
-        }
-    }
-
-    private fun execFallback(url: String) {
         val os = System.getProperty("os.name").lowercase()
         val command = when {
             os.contains("mac") -> arrayOf("open", url)
             os.contains("win") -> arrayOf("rundll32", "url.dll,FileProtocolHandler", url)
             else -> arrayOf("xdg-open", url)
         }
-        Runtime.getRuntime().exec(command)
+        LOG.info("Launching $url via os=$os, command=${command.joinToString(" ")}")
+        try {
+            Runtime.getRuntime().exec(command)
+        } catch (e: Exception) {
+            LOG.warn("Failed to launch $url", e)
+        }
     }
 }

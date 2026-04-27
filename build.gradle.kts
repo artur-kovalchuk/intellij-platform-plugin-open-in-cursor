@@ -68,4 +68,11 @@ tasks {
     publishPlugin {
         dependsOn(patchChangelog)
     }
+
+    runIde {
+        systemProperty(
+            "idea.log.debug.categories",
+            "com.github.arturkovalchuk.intellijplatformpluginopenincursor",
+        )
+    }
 }
