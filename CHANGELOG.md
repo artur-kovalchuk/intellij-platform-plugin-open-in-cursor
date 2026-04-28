@@ -4,6 +4,11 @@
 # Open in Cursor Changelog
 
 ## [Unreleased]
+### Changed
+- Update IntelliJ platform version constraints in build.gradle.kts to support since build 243
+- Update plugin.xml to set require-restart attribute to false
+
+## [0.6.0] - 2026-04-27
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
 - `Cursor` action added under IDEA's standard **Open In** submenu (`RevealGroup`) — appears in the editor popup, editor tab popup, project view popup, and navigation-bar popup alongside "Reveal in Finder".
