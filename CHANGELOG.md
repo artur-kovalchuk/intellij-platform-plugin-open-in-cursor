@@ -5,6 +5,10 @@
 
 ## [Unreleased]
 ### Changed
+- Update plugin icons with new SVG designs for light and dark themes
+
+## [1.0.1] - 2026-04-28
+### Changed
 - Update IntelliJ platform version constraints in build.gradle.kts to support since build 243
 - Update plugin.xml to set require-restart attribute to false
 
