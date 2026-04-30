@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+fix: bug on macOS - replace BrowserUtil.browse(url) with BrowserUtil.open(url)
+
 ## [1.0.3] - 2026-04-30
 
 Replace manual os.name detection + Runtime.exec("open"/"rundll32"/
